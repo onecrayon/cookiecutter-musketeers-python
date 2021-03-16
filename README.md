@@ -32,13 +32,19 @@ following:
 For Windows users, you will want to install Docker Desktop on the Windows side, and place this
 repository (and any projects you create with it) in your WSL 2 file system.
 
-After installing the dependencies above, simply run `make` from the root directory! Once the
-Docker container is built, you will be able to proceed through the standard Cookiecutter command
-line interface to create your project. You can then move your newly created project folder
-out of this project's root directory, and you'll be good to go!
+After installing the dependencies above, simply run `make` from the root directory to list
+the available make commands. Typically for creating a new project, you will run something
+similar to this:
 
-Refer to the README in your new project for how to get a local server up and running (you're
-halfway there already!).
+    make new BASE=../
+
+The `BASE` argument allows you to specify the parent directory where you want to create your
+new project (relative paths are relative to the root directory of this cookiecutter project).
+If you do not specify a base path, then your new project will be created as a subdirectory of
+this project (which you can then move wherever you like).
+
+Refer to the README in your new project for how to get a local server up and running (hint:
+since you've already got a 3 Musketeers setup installed, you're a `make` command away).
 
 ### Configuration options
 
