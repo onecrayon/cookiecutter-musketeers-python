@@ -1,0 +1,47 @@
+[build-system]
+requires = ["poetry=={{ cookiecutter.poetry_version }}"]
+build-backend = "poetry.masonry.api"
+
+[tool.poetry]
+name = "{{ cookiecutter.project_name }}"
+description = "{{ cookiecutter.project_description }}"
+version = "{{ cookiecutter.version }}"
+license = "{{ cookiecutter.license }}"
+readme = "README.md"
+authors = ["{{ cookiecutter.author }}"]
+
+[tool.poetry.dependencies]
+python = "3.9.2"
+gunicorn = "^20.0.4"
+pydantic = "^1.8.1"
+{% if cookiecutter.project_type == "ASGI server" -%}
+uvicorn = "^0.13.4"
+{%- endif -%}
+{%- if cookiecutter.use_postgres == 'True' %}
+alembic = "^1.5.7"
+sqlalchemy = "^1.4.0"
+{% if cookiecutter.async_sqlalchemy == 'True' -%}
+asyncpg = "^0.22.0"
+{%- else -%}
+psycopg2 = "^2.8.6"
+{%- endif -%}
+{%- endif %}
+
+[tool.poetry.dev-dependencies]
+{%- if cookiecutter.use_pytest == 'True' %}
+pytest = "^6.2.2"
+pytest-cov = "^2.11.1"
+{% if cookiecutter.use_postgres == 'True' -%}
+sqlalchemy-utils = "^0.36.8"
+{%- endif -%}
+{%- endif %}
+# These are used when developing in the Docker container with VSCode
+pylint = "^2.7.2"
+rope = "^0.18.0"
+# These are used for `make format`
+isort = "^5.7.0"
+black = "^20.8b1"
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3

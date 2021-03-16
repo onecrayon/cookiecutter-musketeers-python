@@ -1,0 +1,22 @@
+---
+
+# Base Docker Compose file.
+# This defines the basic environments that are used for both development and
+# testing. Overrides are explicitly specified in the Makefile for their
+# relevant targets.
+#
+# Many patterns here lifted directly from:
+# <https://github.com/wemake-services/wemake-django-template>
+
+version: '3.8'
+services:
+    app:
+        image: "{{ cookiecutter.directory_name }}:${ENV}"
+        build:
+            context: .
+            cache_from:
+                - "{{ cookiecutter.directory_name }}:${ENV}"
+                - "*"
+        restart: unless-stopped
+        # env_file populates environment variables at runtime
+        env_file: environments/${ENV}.env

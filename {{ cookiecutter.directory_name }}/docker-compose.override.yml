@@ -1,0 +1,73 @@
+---
+
+# This docker-compose file is required to bind ports and volumes for local development
+# and is automatically loaded when running a docker-compose command without passing
+# specific files with the `-f` flag.
+
+version: '3.8'
+services:
+    app:
+        build:
+            target: development_build
+            args:
+                ENV: local
+        {% if cookiecutter.use_postgres == 'True' or cookiecutter.use_redis == 'True' -%}
+        init: true
+        depends_on:
+            {% if cookiecutter.use_postgres == 'True' -%}
+            - db
+            {%- endif %}
+            {% if cookiecutter.use_redis == 'True' -%}
+            - redis
+            {%- endif %}
+        {%- endif %}
+        networks:
+            - localnet
+        ports:
+            # We only bind ports directly for the local stack
+            # Specifying the local IP ensures we only listen on the host local network
+            - '127.0.0.1:8000:8000'
+        volumes:
+            # We only mount source code for the local stack:
+            - .:/code
+        {% if cookiecutter.project_type == "ASGI server" -%}
+        command: python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+        {% else -%}
+        command: gunicorn --workers=2 app.main:app --reload --bind=0.0.0.0:8000
+        {%- endif %}
+
+    {%- if cookiecutter.use_postgres == 'True' %}
+
+    db:
+        image: postgres:11.10
+        restart: unless-stopped
+        networks:
+            - localnet
+        env_file: environments/%{ENV}.env
+        ports:
+            # NOTE: access from host is on port 5431 (to avoid collisions)!
+            - '127.0.0.1:5431:5432'
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+    {%- endif -%}
+    {%- if cookiecutter.use_redis == 'True' %}
+
+    redis:
+        image: redis
+        restart: unless-stopped
+        networks:
+            - localnet
+        ports:
+            # NOTE: access from host is on port 6378 (to avoid collisions)!
+            - '127.0.0.1:6378:6379'
+    {%- endif %}
+
+networks:
+    # Network for local internals
+    localnet:
+
+{%- if cookiecutter.use_postgres == 'True' %}
+
+volumes:
+    pgdata:
+{%- endif %}

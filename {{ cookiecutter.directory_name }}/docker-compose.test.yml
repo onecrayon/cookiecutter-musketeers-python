@@ -1,0 +1,54 @@
+---
+
+# This docker-compose file is required to bind ports and volumes for test running.
+# It duplicates a lot of the logic out of docker-compose.override.yml because the
+# merging logic wasn't working well (always conflicted over ports with the default
+# database if it were running).
+
+version: '3.8'
+services:
+    app:
+        build:
+            target: development_build
+            args:
+                ENV: test
+        {% if cookiecutter.use_postgres == 'True' or cookiecutter.use_redis == 'True' -%}
+        init: true
+        depends_on:
+            {% if cookiecutter.use_postgres == 'True' -%}
+            - db
+            {%- endif -%}
+            {%- if cookiecutter.use_redis == 'True' %}
+            - redis
+            {%- endif -%}
+        {%- endif %}
+        networks:
+            - testnet
+        volumes:
+            - .:/code
+
+    {%- if cookiecutter.use_postgres == 'True' %}
+
+    db:
+        image: postgres:11.10
+        restart: unless-stopped
+        networks:
+            - testnet
+        env_file: environments/%{ENV}.env
+        ports:
+            - '127.0.0.1:5430:5432'
+    {%- endif -%}
+    {%- if cookiecutter.use_redis == 'True' %}
+
+    redis:
+        image: redis
+        restart: unless-stopped
+        networks:
+            - testnet
+        ports:
+            - '127.0.0.1:6377:6379'
+    {%- endif %}
+
+networks:
+    # Network for local internals
+    testnet:

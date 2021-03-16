@@ -1,0 +1,18 @@
+{
+    "directory_name": "new-project",
+    "project_name": "New Project",
+    "project_description": "My new Python project.",
+    "license": "All Rights Reserved",
+    "version": "0.1.0",
+    "author": "My Name <me@example.com>",
+    "project_type": [
+        "Application",
+        "WSGI server",
+        "ASGI server"
+    ],
+    "use_postgres": [false, true],
+    "async_sqlalchemy": [false, true],
+    "use_redis": [false, true],
+    "use_pytest": [false, true],
+    "poetry_version": "1.1.4"
+}

@@ -1,0 +1,16 @@
+# Ignore environment files
+environments/*
+!environments/local.env
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pytest coverage output
+.coverage
+htmlcov/
+
+# Editor files
+.idea/
+.vscode/
