@@ -26,6 +26,7 @@ if [ '{{ cookiecutter.use_pytest }}' = 'False' ]; then
 	rm -r app/tests
 	rm .coveragerc
 	rm docker-compose.test.yml
+	rm environments/test.env
 elif [ '{{ cookiecutter.async_sqlalchemy }}' = 'True' ]; then
 	rm app/tests/conftest.py
 fi
