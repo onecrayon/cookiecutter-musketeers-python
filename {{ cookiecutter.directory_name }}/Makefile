@@ -6,12 +6,13 @@ DOCKER_RUN_DB = docker-compose run --rm -u root -w /code app
 {% if cookiecutter.use_pytest == 'True' -%}
 DOCKER_COMPOSE_TESTS = docker-compose -p {{ cookiecutter.directory_name }}_tests -f docker-compose.yml -f docker/docker-compose.test.yml
 {% endif %}
+##
 ##=== Welcome to {{ cookiecutter.project_name }}! ===
 
 help:     ## Show this help.
 	@$(DOCKER_RUN) make _help
 
-# This has to be a single line to avoid the ## in the line getting interpreted as help text
+# This has to be a single line to avoid being interpreted as help text
 _help:
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -E -e 's/: [a-z0-9_][ a-z0-9_-]+?[a-z0-9](\s+)##/:\1/' | sed -e 's/##//'
 
@@ -87,11 +88,11 @@ clean: clean-app{% if cookiecutter.use_pytest == 'True' %} clean-tests{% endif %
 
 ##
 
-stack:     ## Rebuild the entire stack
+stack:    ## Rebuild the entire stack
 	@docker-compose pull
 	@docker-compose build
 
-reset:     ## Completely remove all images, containers, and volumes (DANGER!)
+reset:    ## Completely remove all images, containers, and volumes (DANGER!)
 	@docker-compose down --rmi all --remove-orphans --volumes
 	@echo
 	@echo 'You should now run `make stack`{% if cookiecutter.use_postgres == 'True' %}, `make db`, then populate your database{% endif %}!'
