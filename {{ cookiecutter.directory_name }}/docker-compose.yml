@@ -17,4 +17,6 @@ services:
             cache_from:
                 - "{{ cookiecutter.directory_name }}:production"
                 - "*"
+        {%- if cookiecutter.project_type != 'Application' %}
         restart: unless-stopped
+        {%- endif %}
