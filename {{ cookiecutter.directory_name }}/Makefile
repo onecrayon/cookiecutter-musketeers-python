@@ -88,10 +88,10 @@ clean: clean-app{% if cookiecutter.use_pytest == 'True' %} clean-tests{% endif %
 ##
 
 stack:     ## Rebuild the entire stack
-@docker-compose pull
-@docker-compose build
+	@docker-compose pull
+	@docker-compose build
 
 reset:     ## Completely remove all images, containers, and volumes (DANGER!)
-@docker-compose down --rmi all --remove-orphans --volumes
-@echo
-@echo 'You should now run `make stack`{% if cookiecutter.use_postgres == 'True' %}, `make db`, then populate your database{% endif %}!'
+	@docker-compose down --rmi all --remove-orphans --volumes
+	@echo
+	@echo 'You should now run `make stack`{% if cookiecutter.use_postgres == 'True' %}, `make db`, then populate your database{% endif %}!'
