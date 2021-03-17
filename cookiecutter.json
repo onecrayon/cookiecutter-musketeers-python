@@ -14,5 +14,5 @@
     "async_sqlalchemy": [false, true],
     "use_redis": [false, true],
     "use_pytest": [false, true],
-    "poetry_version": "1.1.4"
+    "poetry_version": "1.1.5"
 }
