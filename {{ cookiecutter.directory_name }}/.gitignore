@@ -1,6 +1,7 @@
 # Ignore environment files
 environments/*
 !environments/local.env
+!environments/test.env
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

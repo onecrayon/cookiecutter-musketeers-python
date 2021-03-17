@@ -8,10 +8,10 @@
 version: '3.8'
 services:
     app:
+        image: "{{ cookiecutter.directory_name }}:test"
         build:
             target: development_build
-            args:
-                ENV: test
+        env_file: environments/test.env
         {% if cookiecutter.use_postgres == 'True' or cookiecutter.use_redis == 'True' -%}
         init: true
         depends_on:
@@ -31,10 +31,10 @@ services:
 
     db:
         image: postgres:11.10
+        env_file: environments/test.env
         restart: unless-stopped
         networks:
             - testnet
-        env_file: environments/%{ENV}.env
         ports:
             - '127.0.0.1:5430:5432'
     {%- endif -%}

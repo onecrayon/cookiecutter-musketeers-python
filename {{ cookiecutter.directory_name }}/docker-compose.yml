@@ -11,12 +11,10 @@
 version: '3.8'
 services:
     app:
-        image: "{{ cookiecutter.directory_name }}:${ENV}"
+        image: "{{ cookiecutter.directory_name }}:production"
         build:
             context: .
             cache_from:
-                - "{{ cookiecutter.directory_name }}:${ENV}"
+                - "{{ cookiecutter.directory_name }}:production"
                 - "*"
         restart: unless-stopped
-        # env_file populates environment variables at runtime
-        env_file: environments/${ENV}.env

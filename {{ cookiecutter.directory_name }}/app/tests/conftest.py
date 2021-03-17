@@ -7,25 +7,18 @@ from sqlalchemy_utils import create_database, database_exists, drop_database
 # `models` is necessary to ensure that AlchemyBase is properly populated
 from app import models
 from app.db import AlchemyBase
-from app.environment import ApplicationSettings
+from app.environment import settings
 
 
 @pytest.fixture(scope="session", autouse=True)
 def session_local():
     """Override the default database with our testing database based off most recent models"""
-    settings = ApplicationSettings()
-    test_engine = create_engine(
-        (
-            f"postgresql+psycopg2://{settings.postgres_user}:{settings.postgres_password}"
-            f"@{settings.postgres_host}:{settings.postgres_port}/test"
-        ),
-        echo=False,
-    )
+    test_engine = create_engine(settings.postgres_url(), echo=False)
     # Drop database and recreate to ensure tests are always run against a clean slate
     if database_exists(test_engine.url):
         drop_database(test_engine.url)
     create_database(test_engine.url)
-    # Monkeypatch our test session into the main application
+    # Create our local session handler
     TestSessionLocal = sessionmaker(bind=test_engine)
     # Create all tables
     AlchemyBase.metadata.create_all(bind=test_engine)

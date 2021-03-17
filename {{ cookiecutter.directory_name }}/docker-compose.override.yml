@@ -7,19 +7,19 @@
 version: '3.8'
 services:
     app:
+        image: "{{ cookiecutter.directory_name }}:local"
         build:
             target: development_build
-            args:
-                ENV: local
-        {% if cookiecutter.use_postgres == 'True' or cookiecutter.use_redis == 'True' -%}
+        env_file: environments/local.env
+        {%- if cookiecutter.use_postgres == 'True' or cookiecutter.use_redis == 'True' %}
         init: true
         depends_on:
-            {% if cookiecutter.use_postgres == 'True' -%}
+            {%- if cookiecutter.use_postgres == 'True' %}
             - db
-            {%- endif %}
-            {% if cookiecutter.use_redis == 'True' -%}
+            {%- endif -%}
+            {%- if cookiecutter.use_redis == 'True' %}
             - redis
-            {%- endif %}
+            {%- endif -%}
         {%- endif %}
         networks:
             - localnet
@@ -40,10 +40,10 @@ services:
 
     db:
         image: postgres:11.10
+        env_file: environments/local.env
         restart: unless-stopped
         networks:
             - localnet
-        env_file: environments/%{ENV}.env
         ports:
             # NOTE: access from host is on port 5431 (to avoid collisions)!
             - '127.0.0.1:5431:5432'
