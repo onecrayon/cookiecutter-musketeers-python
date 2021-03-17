@@ -47,7 +47,7 @@ class ApplicationSettings(BaseSettings):
             f":{self.postgres_port}/{self.postgres_db}"
         )
     {%- endif -%}
-    {%- if cookiecutter.use_redis %}
+    {%- if cookiecutter.use_redis == 'True' %}
 
     @property
     def redis_url(self) -> str:
