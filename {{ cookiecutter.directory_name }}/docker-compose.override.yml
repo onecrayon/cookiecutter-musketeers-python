@@ -10,7 +10,7 @@ services:
         image: "{{ cookiecutter.directory_name }}:local"
         build:
             target: development_build
-        env_file: environments/local.env
+        env_file: environments/${ENV:-local}.env
         {%- if cookiecutter.use_postgres == 'True' or cookiecutter.use_redis == 'True' %}
         init: true
         depends_on:
@@ -42,7 +42,7 @@ services:
 
     db:
         image: postgres:11.10
-        env_file: environments/local.env
+        env_file: environments/${ENV:-local}.env
         restart: unless-stopped
         networks:
             - localnet

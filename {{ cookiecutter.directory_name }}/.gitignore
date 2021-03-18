@@ -15,3 +15,6 @@ htmlcov/
 # Editor files
 .idea/
 .vscode/
+
+# OS-specific
+.DS_Store

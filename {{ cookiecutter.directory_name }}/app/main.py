@@ -13,8 +13,8 @@ logging.basicConfig(level=logging.WARNING if not settings.debug else logging.DEB
 
 {% if cookiecutter.project_type == 'Application' -%}
 # TODO: Define your main application logic
-if __name__ == '__main__':
-    print('Hello world!')
+if __name__ == "__main__":
+    print("Hello world!")
 {%- else -%}
 # TODO: Create your main application named `app`
 app = None
